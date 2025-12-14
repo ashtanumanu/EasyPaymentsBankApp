@@ -1,4 +1,4 @@
-package com.swissbank.Accounts.dto;
+package com.swissbank.accounts.dto;
 
 import lombok.Data;
 

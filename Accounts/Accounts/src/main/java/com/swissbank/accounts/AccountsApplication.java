@@ -1,4 +1,4 @@
-package com.swissbank.Accounts;
+package com.swissbank.accounts;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

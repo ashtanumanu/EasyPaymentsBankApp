@@ -1,4 +1,4 @@
-package com.swissbank.Accounts.entites;
+package com.swissbank.accounts.entites;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
