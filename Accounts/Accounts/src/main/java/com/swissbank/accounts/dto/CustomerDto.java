@@ -28,7 +28,7 @@ public class CustomerDto {
     @Schema(name = "Mobile Number",
             description = "Customer Mobile Number",
             example = "9876543210")
-    @NotEmpty
+    @NotEmpty(message = "mobile number cannot be null or empty")
     @Pattern(regexp = "(^$|[0-9]{10})", message = "mobile number must be 10 digits")
     private String mobileNumber;
     private AccountsDto accountsDto;
