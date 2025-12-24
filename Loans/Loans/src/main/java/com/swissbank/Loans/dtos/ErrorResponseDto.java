@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 
 @Schema(name = "ErrorResponse",
         description = "Data Transfer Object for Error Response details")
-@Data @AllArgsConstructor
+@Data
+@AllArgsConstructor
 public class ErrorResponseDto {
 
     @Schema(description = "API Path where the error occurred")
