@@ -1,4 +1,4 @@
-package com.swissbank.Cards;
+package com.swissbank.Cards_1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
