@@ -2,9 +2,12 @@ package com.swissbank.accounts.controller;
 
 import com.swissbank.accounts.constants.AccountConstants;
 import com.swissbank.accounts.dto.CustomerDto;
+import com.swissbank.accounts.dto.ErrorResponseDto;
 import com.swissbank.accounts.dto.ResponseDto;
 import com.swissbank.accounts.service.IAccountsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -51,15 +54,26 @@ public class AccountsController {
     @Operation(summary = "Update customer account details",
             description = "Updates the account details of a customer with the provided information")
     @ApiResponse(responseCode = "200", description = "Account details updated successfully")
-    @ApiResponse(responseCode = "500", description = "Internal server error while updating account details")
+    @ApiResponse(responseCode = "500", description = "Internal server error while updating account details",
+            content = @Content(
+                    schema = @Schema(implementation = ErrorResponseDto.class)
+            )
+
+    )
+    @ApiResponse(responseCode = "417", description = "Expectation Failed while updating account details",
+            content = @Content(
+                    schema = @Schema(implementation = ErrorResponseDto.class)
+            )
+
+    )
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateAccountDetails(@Valid@RequestBody CustomerDto customerDto) {
         boolean isUpdated = accountsService.updateAccontDetails(customerDto);
         if(isUpdated){
             return ResponseEntity.ok(new ResponseDto(AccountConstants.STATUS_CODE_200, AccountConstants.STATUS_MESSAGE_200));
         }else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDto(AccountConstants.STATUS_CODE_500, AccountConstants.STATUS_MESSAGE_500));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(AccountConstants.STATUS_CODE_417, AccountConstants.STATUS_MESSAGE_417));
         }
 
     }
@@ -67,7 +81,18 @@ public class AccountsController {
     @Operation(summary = "Delete customer account",
             description = "Deletes the account of a customer using their mobile number")
     @ApiResponse(responseCode = "200", description = "Account deleted successfully")
-    @ApiResponse(responseCode = "500", description = "Internal server error while deleting account")
+    @ApiResponse(responseCode = "500", description = "Internal server error while deleting account",
+            content = @Content(
+                    schema = @Schema(implementation = ErrorResponseDto.class)
+            )
+
+    )
+    @ApiResponse(responseCode = "417", description = "Expectation Failed while updating account details",
+            content = @Content(
+                    schema = @Schema(implementation = ErrorResponseDto.class)
+            )
+
+    )
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam@Pattern(regexp = "(^$|[0-9]{10})") String mobileNumber) {
 
@@ -76,8 +101,8 @@ public class AccountsController {
         if(isDeleted){
             return ResponseEntity.ok(new ResponseDto(AccountConstants.STATUS_CODE_200, AccountConstants.STATUS_MESSAGE_200));
         }else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDto(AccountConstants.STATUS_CODE_500, AccountConstants.STATUS_MESSAGE_500));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(AccountConstants.STATUS_CODE_417, AccountConstants.STATUS_MESSAGE_417));
         }
 
     }
