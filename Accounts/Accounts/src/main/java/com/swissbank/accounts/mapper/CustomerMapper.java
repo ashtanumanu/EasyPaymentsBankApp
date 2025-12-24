@@ -6,7 +6,6 @@ import com.swissbank.accounts.entites.Customer;
 public class CustomerMapper {
 
     public static CustomerDto mapToCustomerDto(Customer customer, CustomerDto  customerDto) {
-        customerDto = new CustomerDto();
         customerDto.setName(customer.getName());
         customerDto.setEmail(customer.getEmail());
         customerDto.setMobileNumber(customer.getMobileNumber());
@@ -15,7 +14,6 @@ public class CustomerMapper {
     }
 
     public static Customer mapToCustomer(CustomerDto customerDto, Customer customer) {
-        customer = new Customer();
         customer.setName(customerDto.getName());
         customer.setEmail(customerDto.getEmail());
         customer.setMobileNumber(customerDto.getMobileNumber());

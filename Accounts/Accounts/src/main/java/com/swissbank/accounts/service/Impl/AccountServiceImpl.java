@@ -36,8 +36,6 @@ public class AccountServiceImpl implements IAccountsService {
         if(optionalCustomer.isPresent()){
             throw  new CustomerAlreadyExistException("Customer already registered with give mobile number "+optionalCustomer.get().getMobileNumber());
         }
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("System User");
 
         Customer savedCustomer = customerRepository.save(customer);
         accountsRepository.save(createNewAccount(savedCustomer));
@@ -77,13 +75,13 @@ public class AccountServiceImpl implements IAccountsService {
     public boolean updateAccontDetails(CustomerDto customerDto) {
         boolean isUpdated = false;
         AccountsDto accountsDto = customerDto.getAccountsDto();
-        if(accountsDto!=null){
+        if(accountsDto !=null){
             Accounts accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(() -> new ResourceNotFoundtException(
                     "Account", "account number", accountsDto.getAccountNumber().toString()
             ));
             System.out.println("db fetched account : "+accounts);
-            AccountsMapper.mapToAccounts(accountsDto, accounts);
-
+            Accounts mappedAccounts = AccountsMapper.mapToAccounts(accountsDto, accounts);
+            System.out.println("mappedAccounts fetched account : "+mappedAccounts);
 
             System.out.println("mapped account : "+accounts);
 
@@ -91,6 +89,7 @@ public class AccountServiceImpl implements IAccountsService {
             System.out.println("saved account : "+accounts);
 
             long customerId = accounts.getCustomerId();
+            System.out.println("customer id is :: "+customerId);
             Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundtException(
                     "Customer", "customer id", String.valueOf(customerId)
             ));

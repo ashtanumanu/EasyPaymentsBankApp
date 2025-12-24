@@ -4,6 +4,9 @@ import com.swissbank.accounts.constants.AccountConstants;
 import com.swissbank.accounts.dto.CustomerDto;
 import com.swissbank.accounts.dto.ResponseDto;
 import com.swissbank.accounts.service.IAccountsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Tag(name = "Accounts Controller", description = "APIs for managing customer accounts performing CRUD operations")
 @RequestMapping(path = "/api/v1/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 @Validated
@@ -25,6 +29,9 @@ public class AccountsController {
     private IAccountsService accountsService;
 
 
+    @Operation(summary = "Create a new customer account",
+            description = "Creates a new customer account with the provided details")
+    @ApiResponse(responseCode = "201", description = "Account created successfully")
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {
         accountsService.createAccount(customerDto);
@@ -32,12 +39,19 @@ public class AccountsController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @Operation(summary = "Fetch customer account details",
+            description = "Fetches the account details of a customer using their mobile number")
+    @ApiResponse(responseCode = "200", description = "Account details fetched successfully")
     @GetMapping("/fetch")
     public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam String mobileNumber) {
         CustomerDto customerDto = accountsService.fetchAcccountDetails(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(customerDto);
     }
 
+    @Operation(summary = "Update customer account details",
+            description = "Updates the account details of a customer with the provided information")
+    @ApiResponse(responseCode = "200", description = "Account details updated successfully")
+    @ApiResponse(responseCode = "500", description = "Internal server error while updating account details")
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateAccountDetails(@Valid@RequestBody CustomerDto customerDto) {
         boolean isUpdated = accountsService.updateAccontDetails(customerDto);
@@ -50,6 +64,10 @@ public class AccountsController {
 
     }
 
+    @Operation(summary = "Delete customer account",
+            description = "Deletes the account of a customer using their mobile number")
+    @ApiResponse(responseCode = "200", description = "Account deleted successfully")
+    @ApiResponse(responseCode = "500", description = "Internal server error while deleting account")
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDto> deleteAccountDetails(@RequestParam@Pattern(regexp = "(^$|[0-9]{10})") String mobileNumber) {
 
